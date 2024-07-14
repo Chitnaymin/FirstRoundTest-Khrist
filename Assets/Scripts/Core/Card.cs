@@ -10,10 +10,11 @@ public class Card : MonoBehaviour
 
     public Sprite backImg;
 
+	public int ID = -1;
+
 	private Image image;
-	//private Animator animator;
-	private bool isFlipped = false;
-	private bool isMatched = false;
+	public bool isMatched = false;
+	private GameManager gameManager;
 
 	private void Awake() {
 		Button btnCard = transform.GetComponent<Button>();
@@ -26,27 +27,63 @@ public class Card : MonoBehaviour
 		image.sprite = backImg;
 	}
 
+	public void InitData(int _id, Sprite _frontImg, GameManager _gameManager) {
+		ID = _id;
+		frontImg = _frontImg;
+		gameManager = _gameManager;
+	}
+
 	void onClickedCard() {
-		if (!isMatched && !isFlipped) {
-			FlipCard();
-			GameManager.Instance.CardSelected(this);
+		if (!isMatched) {
+			//FlipCard();
+			gameManager.CardSelected(this);
 		}
 	}
 
-	void OnMouseDown() {
-		if (!isMatched && !isFlipped) {
-			FlipCard();
-			GameManager.Instance.CardSelected(this);
-		}
-	}
 
 	public void FlipCard() {
-		isFlipped = !isFlipped;
-		//animator.SetTrigger("Flip");
-		transform.DOScaleX(-1, 1);
+		Sequence sequence = DOTween.Sequence();
+		sequence.Append(transform.DOScaleX(0, 0.3f).From(-1).OnComplete(() => {
+			image.sprite = frontImg;
+		}));
+
+		sequence.Append(transform.DOScaleX(1, 0.3f).From(0).OnComplete(() => {
+			gameManager.CardFlipped();
+		}));
+	}
+
+	public void ReFlipCard() {
+		Sequence sequence = DOTween.Sequence();
+		sequence.Append(transform.DOScaleX(0, 0.3f).From(1).OnComplete(() => {
+			image.sprite = backImg;
+		}));
+
+		sequence.Append(transform.DOScaleX(-1, 0.3f).From(0).OnComplete(() => {
+			gameManager.CardReFlipped();
+		}));
+	}
+
+	public void InitFlipCard() {
+		Sequence sequence = DOTween.Sequence();
+		sequence.Append(transform.DOScaleX(0, 0.3f).From(-1).OnComplete(() => {
+			image.sprite = frontImg;
+		}));
+
+		sequence.Append(transform.DOScaleX(1, 1f).From(0).OnComplete(() => {
+			
+		}));
+
+		sequence.Append(transform.DOScaleX(0, 1f).From(1).OnComplete(() => {
+			image.sprite = backImg;
+		}));
+
+		sequence.Append(transform.DOScaleX(-1, 0.3f).From(0).OnComplete(() => {
+			gameManager.isReFlipping = false;
+		}));
 	}
 
 	public void SetMatched() {
 		isMatched = true;
+		this.GetComponent<Image>().enabled = false;
 	}
 }

@@ -69,9 +69,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 4272b5eaaa0b0d642b49552bf5749eba, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontImg: {fileID: 21300000, guid: 235c4c0614634624d82e47fc56a7e79a, type: 3}
   backImg: {fileID: 21300000, guid: 4272b5eaaa0b0d642b49552bf5749eba, type: 3}
+  ID: -1
 --- !u!61 &800193139439676491
 BoxCollider2D:
   m_ObjectHideFlags: 0
